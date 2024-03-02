@@ -10,7 +10,8 @@ import { getNavLinks } from "../../helpers/navlinks-utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SignoutButton from "../ui/signout-button";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
-import NewEntryButton from "../ui/new-entry-button";
+import RoundedPinkButton from "../ui/rounded-pink-button";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const MainNavigation = () => {
   const [mounted, setMounted] = useState(false);
@@ -94,8 +95,11 @@ const MainNavigation = () => {
             ))}
           </ul>
         </nav>
-        <div>
-          <NewEntryButton />
+        <div className="mr-16">
+          <RoundedPinkButton
+            title={"New Entry"}
+            icon={<FontAwesomeIcon icon={faPlus} className="pr-2" />}
+          />
         </div>
         <div className="mr-20 hover:bg-gray-100 mt-28 text-zinc-400 p-4">
           <FontAwesomeIcon icon={faArrowRightFromBracket} />

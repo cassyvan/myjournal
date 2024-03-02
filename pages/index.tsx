@@ -1,3 +1,4 @@
+import RoundedPinkButton from "@/components/ui/rounded-pink-button";
 import signIn from "@/firebase/auth/signin";
 import { useTheme } from "next-themes";
 import Image from "next/image";
@@ -35,7 +36,10 @@ const HomePage = () => {
       <div className="self-center py-8">
         <div className="wrapper bg-neutral-50 rounded-lg shadow dark:border">
           <div className="form-wrapper p-6">
-            <form onSubmit={handleForm} className="form px-2">
+            <form
+              onSubmit={handleForm}
+              className="form px-2 w-96 text-gray-900"
+            >
               <label htmlFor="email">
                 <p>Email</p>
                 <input
@@ -45,7 +49,7 @@ const HomePage = () => {
                   name="email"
                   id="email"
                   placeholder="name@company.com"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-full focus:ring-pink-600 focus:border-pink-600 block w-full px-4 py-2.5"
                 />
               </label>
               <label htmlFor="password">
@@ -57,15 +61,12 @@ const HomePage = () => {
                   name="password"
                   id="password"
                   placeholder="*********"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-pink-600 focus:border-pink-600 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-full focus:ring-pink-600 focus:border-pink-600 block w-full px-4 py-2.5"
                 />
               </label>
-              <button
-                type="submit"
-                className="hover:text-pink-300 w-full text-white bg-pink-300 hover:bg-pink-700 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-5"
-              >
-                Sign In
-              </button>
+              <div className="text-center pt-6">
+                <RoundedPinkButton title="Sign In" />
+              </div>
             </form>
           </div>
         </div>
@@ -73,7 +74,7 @@ const HomePage = () => {
       <div className="self-center">
         <p>
           Don&apos;t have an account yet? Please
-          <Link href={"/signup"} className="hover:text-pink-400">
+          <Link href={"/signup"} className="text-pink-600 hover:text-gray-900">
             {" "}
             Sign Up
           </Link>{" "}

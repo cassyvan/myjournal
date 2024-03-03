@@ -12,13 +12,7 @@ const Modal = () => {
 
   const pathname = usePathname();
 
-  const handleTextInput = (e: Event & { target: HTMLTextAreaElement }) => {
-    if (e.target.value || e.target.value != "") {
-      toggleCheckButton(true);
-    } else {
-      toggleCheckButton(false);
-    }
-  };
+  const handleTextInput = (e: Event & { target: HTMLTextAreaElement }) => {};
 
   return (
     <>

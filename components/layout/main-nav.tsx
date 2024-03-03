@@ -1,28 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
-import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { getNavLinks } from "../../helpers/navlinks-utils";
+import { useAuthContext } from "@/context/AuthContext";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SignoutButton from "../ui/signout-button";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import RoundedPinkButton from "../ui/rounded-pink-button";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainNavigation = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [openMenu, setOpenMenu] = useState(false);
-
   const context = useAuthContext();
-
   const navLinks = getNavLinks();
-
   const pathName = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -32,17 +28,13 @@ const MainNavigation = () => {
     return null;
   }
 
-  const toggleDarkTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  const toggleMenu = () => {
-    setOpenMenu(!openMenu);
-  };
-
   if (context.user == null) {
     return;
   }
+
+  const showJournalModal = () => {
+    router.push({ pathname: pathName, query: "modal=true" });
+  };
 
   return (
     <div className="fixed inset-y-0 z-10 flex flex-col left-0 h-screen absolute w-64">
@@ -99,6 +91,7 @@ const MainNavigation = () => {
           <RoundedPinkButton
             title={"New Entry"}
             icon={<FontAwesomeIcon icon={faPlus} className="pr-2" />}
+            onClick={showJournalModal}
           />
         </div>
         <div className="mr-20 hover:bg-gray-100 mt-28 text-zinc-400 p-4">

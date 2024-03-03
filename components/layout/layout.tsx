@@ -2,6 +2,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import MainNavigation from "./main-nav";
 import { Quicksand } from "next/font/google";
+import Modal from "../ui/modal";
 
 type childrenProps = {
   children: ReactNode;
@@ -28,6 +29,7 @@ const Layout = ({ children }: childrenProps) => {
       <div className="overflow-y-auto h-screen">
         <MainNavigation />
         <main className="flex flex-col items-center justify-center flex-1">
+          <Modal />
           <div className="max-h-screen py-16">{children}</div>
         </main>
       </div>

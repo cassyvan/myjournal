@@ -65,7 +65,11 @@ const HomePage = () => {
                 />
               </label>
               <div className="text-center pt-6">
-                <RoundedPinkButton title="Sign In" />
+                <RoundedPinkButton
+                  title="Sign In"
+                  type="submit"
+                  onClick={handleForm}
+                />
               </div>
             </form>
           </div>

@@ -1,10 +1,11 @@
 import RoundedPinkButton from "@/components/ui/rounded-pink-button";
+import { useAuthContext } from "@/context/AuthContext";
 import signIn from "@/firebase/auth/signin";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   const { theme, setTheme } = useTheme();
@@ -12,6 +13,13 @@ const HomePage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const context = useAuthContext();
+
+  useEffect(() => {
+    if (context.user) {
+      router.push("/dashboard");
+    }
+  });
 
   const handleForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -21,8 +29,6 @@ const HomePage = () => {
     if (error) {
       return console.log(error);
     }
-
-    // else successful
     console.log(result);
     return router.push("/dashboard");
   };

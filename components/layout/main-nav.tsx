@@ -59,31 +59,29 @@ const MainNavigation = () => {
         <nav className="text-xl mb-16 mr-16 text-zinc-400">
           <ul className="flex flex-col justify-center">
             {navLinks.map((link) => (
-              <span
-                className="py-6 hover:bg-gray-50"
+              <li
                 key={link.title.toLowerCase()}
+                className="py-6 hover:bg-gray-50"
               >
-                <li>
-                  <FontAwesomeIcon
-                    icon={link.faIcon}
-                    className={
-                      pathName === `/${link.title.toLowerCase()}`
-                        ? "text-pink-300"
-                        : ""
-                    }
-                  />
-                  <Link
-                    href={`/${link.title.toLowerCase()}`}
-                    className={
-                      pathName === `/${link.title.toLowerCase()}`
-                        ? "text-pink-300 pl-2"
-                        : "pl-2"
-                    }
-                  >
-                    {link.title}
-                  </Link>
-                </li>
-              </span>
+                <FontAwesomeIcon
+                  icon={link.faIcon}
+                  className={
+                    pathName === `/${link.title.toLowerCase()}`
+                      ? "text-pink-300"
+                      : ""
+                  }
+                />
+                <Link
+                  href={`/${link.title.toLowerCase()}`}
+                  className={
+                    pathName === `/${link.title.toLowerCase()}`
+                      ? "text-pink-300 pl-2"
+                      : "pl-2"
+                  }
+                >
+                  {link.title}
+                </Link>
+              </li>
             ))}
           </ul>
         </nav>

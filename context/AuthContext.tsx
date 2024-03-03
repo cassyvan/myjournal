@@ -4,7 +4,7 @@ import { firebase_app } from "@/firebase/config";
 
 const auth = getAuth(firebase_app);
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext<{ user: User | null }>({ user: null });
 
 export const useAuthContext = () => useContext(AuthContext);
 
@@ -15,10 +15,8 @@ export const AuthContextProvider = ({ children }: any) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("logged in");
         setUser(user);
       } else {
-        console.log("not logged in");
         setUser(null);
       }
       setLoading(false);

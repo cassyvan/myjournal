@@ -33,7 +33,11 @@ const Modal = ({ newEntry }: props) => {
     closeModal();
     const { body } = content;
     const title = body.substring(0, 20);
-    await axios.post("/api/journal", { title, slug: dashify(title), body });
+    await axios.post("/api/journal", {
+      title,
+      slug: dashify(title),
+      body,
+    });
     router.push("/journal");
   };
 

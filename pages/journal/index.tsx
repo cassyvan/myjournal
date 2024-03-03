@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from "axios";
 import db from "../../firebase/firestore";
+import JournalCard from "@/components/layout/journalCard";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 interface Entry {
+  body: string;
+  created: string;
   id: string;
-  title: string;
   slug: string;
+  title: string;
 }
 
 interface Entries {
@@ -14,13 +17,20 @@ interface Entries {
 }
 
 const JournalHomePage = ({ entriesData }: Entries) => {
+  const pathName = usePathname();
+  const router = useRouter();
+
+  const showModal = () => {
+    router.push({ pathname: pathName, query: "modal=true" });
+  };
+
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center">
       <h2>Journal</h2>
-      <div className="grid grid-cols-2  max-w-6xl h-[10rem] sm:flex sm:flex-col sm:mx-6">
+      <div className="w-135 min-w-full mt-8">
         {entriesData.map((entry) => (
-          <div key={entry.id}>
-            <Link href={`/admin/edit/${entry.id}`}>{entry.title}</Link>
+          <div key={entry.id} onClick={showModal}>
+            <JournalCard content={entry.body} date={entry.created} />
             <br />
           </div>
         ))}

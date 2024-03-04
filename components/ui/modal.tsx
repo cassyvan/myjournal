@@ -2,15 +2,12 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import dashify from "dashify";
 import axios from "axios";
+import { JournalContext } from "@/context/entryContext";
 
-interface props {
-  newEntry: boolean;
-}
-
-const Modal = ({ newEntry }: props) => {
+const Modal = () => {
   const [checkButton, setCheckButton] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,17 +18,18 @@ const Modal = ({ newEntry }: props) => {
     title: "",
     body: "",
   };
+  const [formData, setFormData] = useState(newContent);
 
-  const [content, setContent] = useState(newContent);
+  const { selectedEntry } = useContext(JournalContext);
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target;
-    setContent((prevState) => ({ ...prevState, [name]: value }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const onSubmit = async () => {
     closeModal();
-    const { body } = content;
+    const { body } = formData;
     const title = body.substring(0, 20);
     await axios.post("/api/journal", {
       title,
@@ -70,7 +68,7 @@ const Modal = ({ newEntry }: props) => {
                 onInput={(e) => toggleCheckButtonDisplay(e)}
                 name="body"
                 onChange={onChange}
-                value={content.body}
+                defaultValue={selectedEntry?.toString()}
               ></textarea>
             </div>
             {checkButton && (

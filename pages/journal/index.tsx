@@ -3,6 +3,8 @@ import db from "../../firebase/firestore";
 import JournalCard from "@/components/layout/journalCard";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Modal from "@/components/ui/modal";
 
 interface Entry {
   body: string;
@@ -17,13 +19,6 @@ interface Entries {
 }
 
 const JournalHomePage = ({ entriesData }: Entries) => {
-  const pathName = usePathname();
-  const router = useRouter();
-
-  const showModal = () => {
-    router.push({ pathname: pathName, query: "modal=true" });
-  };
-
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
     entriesData.forEach((entry) => {
@@ -57,7 +52,7 @@ const JournalHomePage = ({ entriesData }: Entries) => {
           <div key={yearMonth}>
             <h3 className="text-left py-5">{yearMonth}</h3>
             {entries.map((entry) => (
-              <div key={entry.id} onClick={showModal}>
+              <div key={entry.id}>
                 <JournalCard content={entry.body} date={entry.created} />
                 <br />
               </div>

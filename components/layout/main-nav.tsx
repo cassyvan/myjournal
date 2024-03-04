@@ -12,6 +12,7 @@ import RoundedPinkButton from "../ui/rounded-pink-button";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useJournalContext } from "@/context/entryContext";
 
 const MainNavigation = () => {
   const [mounted, setMounted] = useState(false);
@@ -19,6 +20,7 @@ const MainNavigation = () => {
   const navLinks = getNavLinks();
   const pathName = usePathname();
   const router = useRouter();
+  const { updateEntry } = useJournalContext();
 
   useEffect(() => {
     setMounted(true);
@@ -33,6 +35,7 @@ const MainNavigation = () => {
   }
 
   const showJournalModal = () => {
+    updateEntry("");
     router.push({ pathname: pathName, query: "modal=true" });
   };
 

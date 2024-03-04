@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { getNavLinks } from "../../helpers/navlinks-utils";
+import { getNavLinks } from "../../utils/navlinks-utils";
 import { useAuthContext } from "@/context/AuthContext";
 
 import SignoutButton from "../ui/signout-button";
@@ -35,7 +35,7 @@ const MainNavigation = () => {
   }
 
   const showJournalModal = () => {
-    updateEntry("");
+    updateEntry({});
     router.push({ pathname: pathName, query: "modal=true" });
   };
 

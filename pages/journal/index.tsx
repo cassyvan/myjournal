@@ -1,18 +1,7 @@
 import Link from "next/link";
 import db from "../../firebase/firestore";
 import JournalCard from "@/components/layout/journalCard";
-import { useRouter } from "next/router";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import Modal from "@/components/ui/modal";
-
-interface Entry {
-  body: string;
-  created: string;
-  id: string;
-  slug: string;
-  title: string;
-}
+import { Entry } from "@/utils/entry";
 
 interface Entries {
   entriesData: Entry[];
@@ -53,7 +42,7 @@ const JournalHomePage = ({ entriesData }: Entries) => {
             <h3 className="text-left py-5">{yearMonth}</h3>
             {entries.map((entry) => (
               <div key={entry.id}>
-                <JournalCard content={entry.body} date={entry.created} />
+                <JournalCard entry={entry} />
                 <br />
               </div>
             ))}
@@ -65,18 +54,25 @@ const JournalHomePage = ({ entriesData }: Entries) => {
 };
 
 export const getStaticProps = async () => {
-  const entries = await db
-    .collection("entries")
-    .orderBy("created", "desc")
-    .get();
-  const entriesData = entries.docs.map((entry) => ({
-    id: entry.id,
-    ...entry.data(),
-  }));
-  return {
-    props: { entriesData },
-    revalidate: 10,
-  };
+  try {
+    const entries = await db
+      .collection("entries")
+      .orderBy("created", "desc")
+      .get();
+    const entriesData = entries.docs.map((entry) => ({
+      id: entry.id,
+      ...entry.data(),
+    }));
+    return {
+      props: { entriesData },
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: { error: "Error fetching data" },
+    };
+  }
 };
 
 export default JournalHomePage;

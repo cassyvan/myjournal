@@ -1,4 +1,4 @@
-import { getNavLinks } from "@/helpers/navlinks-utils";
+import { getNavLinks } from "@/utils/navlinks-utils";
 import { faXmark, faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";

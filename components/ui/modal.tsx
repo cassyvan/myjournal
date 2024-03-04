@@ -22,13 +22,14 @@ const Modal = () => {
 
   const { selectedEntry } = useContext(JournalContext);
 
+  const entryBody = selectedEntry?.body;
+
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const onSubmit = async () => {
-    closeModal();
     const { body } = formData;
     const title = body.substring(0, 20);
     await axios.post("/api/journal", {
@@ -36,7 +37,8 @@ const Modal = () => {
       slug: dashify(title),
       body,
     });
-    router.push("/journal");
+    console.log(body);
+    closeModal();
   };
 
   const toggleCheckButtonDisplay = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -68,7 +70,7 @@ const Modal = () => {
                 onInput={(e) => toggleCheckButtonDisplay(e)}
                 name="body"
                 onChange={onChange}
-                defaultValue={selectedEntry?.toString()}
+                defaultValue={entryBody}
               ></textarea>
             </div>
             {checkButton && (

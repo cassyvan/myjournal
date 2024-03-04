@@ -1,21 +1,31 @@
 import React, { createContext, useContext, useState } from "react";
 
-interface JournalContextType {
-  selectedEntry: string | null;
-  updateEntry: (entry: string) => void;
+interface Entry {
+  body: string;
+  created: string;
+  id: string;
+  slug: string;
+  title: string;
 }
 
+interface JournalContextType {
+  selectedEntry: Entry;
+  updateEntry: (entry: Entry) => void;
+}
+
+const emptyEntry = { body: "", created: "", id: "", slug: "", title: "" };
+
 export const JournalContext = createContext<JournalContextType>({
-  selectedEntry: "",
-  updateEntry: (entry: string) => {},
+  selectedEntry: emptyEntry,
+  updateEntry: (entry: Entry) => {},
 });
 
 export const useJournalContext = () => useContext(JournalContext);
 
 export const JournalContextProvider = ({ children }: any) => {
-  const [selectedEntry, setSelectedEntry] = useState("");
+  const [selectedEntry, setSelectedEntry] = useState<Entry>(emptyEntry);
 
-  const updateEntry = (entry: string) => {
+  const updateEntry = (entry: Entry) => {
     setSelectedEntry(entry);
   };
 

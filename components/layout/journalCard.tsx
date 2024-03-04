@@ -1,48 +1,83 @@
-import { useJournalContext } from "@/context/entryContext";
+import { JournalContext, useJournalContext } from "@/context/entryContext";
+import { Entry } from "@/utils/entry";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import DeleteDialogue from "./deleteDialogue";
 
 interface props {
-  content: string;
-  date: string;
+  entry: Entry;
 }
 
-const JournalCard = ({ content, date }: props) => {
-  const entryDate = new Date(date);
+const JournalCard = ({ entry }: props) => {
+  const [deleteDialogue, setDeleteDialogue] = useState(false);
+
+  const entryDate = new Date(entry.created);
   const weekDay = entryDate.toLocaleString("default", { weekday: "short" });
   const dateNum = entryDate.getDate();
 
   const pathName = usePathname();
   const router = useRouter();
 
+  const { selectedEntry } = useContext(JournalContext);
+
   const { updateEntry } = useJournalContext();
 
   const showModal = () => {
-    updateEntry(content);
+    updateEntry(entry);
     router.push({ pathname: pathName, query: "modal=true" });
   };
 
+  const openDeleteDialogue = () => {
+    console.log(selectedEntry.id);
+
+    setDeleteDialogue(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    await axios.delete(`/api/journal/${selectedEntry.id}`);
+    setDeleteDialogue(false);
+    router.push("/journal");
+  };
+
+  const closeDeleteDialogue = () => {
+    setDeleteDialogue(false);
+  };
+
+  const handleDelete = async () => {
+    await axios.delete(`/api/journal/${selectedEntry.id}`);
+    router.push("/journal");
+  };
+
   return (
-    <div className="">
-      <div
-        className="block h-36 p-6 bg-white border border-sky-200 rounded-lg shadow hover:bg-stone-100 hover:cursor-pointer relative"
-        onClick={() => showModal()}
-      >
-        <div className="absolute text-center">
-          <div className="bg-zinc-100 px-3.5 py-1.5 rounded-lg -mt-2 -ml-2 shadow-md">
+    <div>
+      <div className="block h-36 bg-white border border-sky-200 rounded-lg shadow hover:bg-stone-100 hover:cursor-pointer relative">
+        <div className="absolute text-center mt-3 ml-4">
+          <div className="bg-zinc-100 px-3.5 py-1.5 rounded-lg shadow-md">
             <div>{weekDay}</div>
             <div className="font-bold">{dateNum}</div>
           </div>
           <FontAwesomeIcon
             icon={faTrash}
-            className="p-2 -ml-2 mt-2 hover:text-pink-400"
+            className="p-2 mt-2 hover:text-pink-400"
+            onClick={openDeleteDialogue}
           />
         </div>
-        <p className="text-sm text-gray-700 overflow-hidden line-clamp-4 overflow-ellipsis pl-16">
-          {content}
-        </p>
+        <div className="w-full h-full p-6" onClick={() => showModal()}>
+          <p className="text-sm text-gray-700 overflow-hidden line-clamp-4 overflow-ellipsis pl-16">
+            {entry.body}
+          </p>
+        </div>
+      </div>
+      <div>
+        <DeleteDialogue
+          isOpen={deleteDialogue}
+          onClose={closeDeleteDialogue}
+          onConfirm={handleConfirmDelete}
+        />
       </div>
     </div>
   );

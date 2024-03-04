@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface props {
   content: string;
@@ -6,12 +7,24 @@ interface props {
 }
 
 const JournalCard = ({ content, date }: props) => {
-  console.log(date);
+  const entryDate = new Date(date);
+  const weekDay = entryDate.toLocaleString("default", { weekday: "short" });
+  const dateNum = entryDate.getDate();
+
   return (
-    <div className="py-2">
-      <div className="block max-w-2xl max-h-96 p-6 bg-white border border-sky-200 rounded-lg shadow hover:bg-stone-100 hover:cursor-pointer">
-        <div></div>
-        <p className="text-sm text-gray-700 overflow-hidden line-clamp-4 overflow-ellipsis">
+    <div className="">
+      <div className="block h-36 p-6 bg-white border border-sky-200 rounded-lg shadow hover:bg-stone-100 hover:cursor-pointer relative">
+        <div className="absolute text-center">
+          <div className="bg-zinc-100 px-3.5 py-1.5 rounded-lg -mt-2 -ml-2 shadow-md">
+            <div>{weekDay}</div>
+            <div className="font-bold">{dateNum}</div>
+          </div>
+          <FontAwesomeIcon
+            icon={faTrash}
+            className="p-2 -ml-2 mt-2 hover:text-pink-400"
+          />
+        </div>
+        <p className="text-sm text-gray-700 overflow-hidden line-clamp-4 overflow-ellipsis pl-16">
           {content}
         </p>
       </div>

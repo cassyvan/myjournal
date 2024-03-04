@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       screens: { sm: { max: "900px" } },
       width: {
-        135: "35rem",
+        138: "38rem",
       },
       keyframes: {
         blob: {

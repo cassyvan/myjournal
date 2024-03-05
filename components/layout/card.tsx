@@ -1,21 +1,30 @@
-import { Quote } from "@/utils/quotetype";
 import { ReactNode } from "react";
 
 interface props {
-  title?: string;
-  content?: string;
-  quote?: Quote;
+  tip: string;
+  title: string;
+  prompts?: { key: number; title: string }[];
+  color: string;
 }
 
-const Card = ({ title, content, quote }: props) => {
+const Card = ({ title, tip, prompts, color }: props) => {
   return (
-    <div className="py-8">
-      <h3 className="text-left pb-2">{title}</h3>
+    <div className="pt-4">
       <div className="block p-6 bg-white border border-sky-200 rounded-lg shadow w-full">
         <div className="font-normal text-gray-700 w-full h-full p-2">
-          <p>{content}</p>
-          <p>{quote?.Quote}</p>
-          <p className="text-right italic pt-2">{` - ${quote?.Author}`}</p>
+          <p className={`${color}" text-xl  font-bold  "`}>{title}</p>
+          <p className="my-2 font-medium">{tip}</p>
+          <ul className="mt-6">
+            {prompts &&
+              prompts?.map((tip) => (
+                <>
+                  <li key={tip.key} className="italic">
+                    {tip.title}
+                  </li>
+                  <br />
+                </>
+              ))}
+          </ul>
         </div>
       </div>
     </div>

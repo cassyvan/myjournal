@@ -11,6 +11,7 @@ const config: Config = {
       screens: { sm: { max: "900px" } },
       width: {
         138: "38rem",
+        140: "40rem",
       },
       keyframes: {
         blob: {

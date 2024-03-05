@@ -2,15 +2,34 @@ import Link from "next/link";
 import db from "../../firebase/firestore";
 import JournalCard from "@/components/layout/journalCard";
 import { Entry } from "@/utils/entrytype";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "@/context/AuthContext";
 
 interface Entries {
   entriesData: Entry[];
 }
 
-const JournalHomePage = ({ entriesData }: Entries) => {
+const JournalHomePage = () => {
+  const [entriesData, setEntriesData] = useState<Entry[]>();
+  const { user } = useAuthContext();
+  const userId = user?.uid;
+
+  useEffect(() => {
+    async function fetchEntries() {
+      try {
+        const response = await axios.get(`/api/journal?userId=${userId}`);
+        setEntriesData(response.data);
+      } catch (error) {
+        console.error("Error fetching quote: ", error);
+      }
+    }
+    fetchEntries();
+  }, []);
+
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
-    entriesData.forEach((entry) => {
+    entriesData?.forEach((entry) => {
       const date = new Date(entry.created);
       const yearMonth = date.toLocaleDateString("default", {
         year: "numeric",
@@ -32,7 +51,6 @@ const JournalHomePage = ({ entriesData }: Entries) => {
   };
 
   const groupedEntries = groupEntriesByYear();
-  console.log(groupedEntries);
   return (
     <div className="flex flex-col items-center">
       <h2>Journal</h2>
@@ -60,13 +78,16 @@ const JournalHomePage = ({ entriesData }: Entries) => {
     </div>
   );
 };
+``;
 
 export const getStaticProps = async () => {
   try {
     const entries = await db
       .collection("entries")
-      .orderBy("created", "desc")
+      .where("userId", "==", "soometing")
+      // .orderBy("created", "desc")
       .get();
+
     const entriesData = entries.docs.map((entry) => ({
       id: entry.id,
       ...entry.data(),

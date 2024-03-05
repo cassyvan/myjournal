@@ -2,10 +2,10 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import dashify from "dashify";
+import { ChangeEvent, useContext, useState } from "react";
 import axios from "axios";
 import { JournalContext } from "@/context/entryContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const Modal = () => {
   const [checkButton, setCheckButton] = useState(false);
@@ -13,6 +13,8 @@ const Modal = () => {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
   const pathname = usePathname();
+  const { user } = useAuthContext();
+  const userId = user?.uid;
 
   const newContent = {
     title: "",
@@ -31,16 +33,17 @@ const Modal = () => {
   const onSubmit = async () => {
     const { body } = formData;
     const title = body.substring(0, 20);
-    console.log(selectedEntry.id);
     if (selectedEntry.id) {
       await axios.put(`/api/journal/${selectedEntry.id}`, {
         title,
         body,
+        userId,
       });
     } else {
       await axios.post("/api/journal", {
         title,
         body,
+        userId,
       });
     }
     closeModal();

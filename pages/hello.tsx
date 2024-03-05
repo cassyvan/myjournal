@@ -40,7 +40,7 @@ const Dashboard = () => {
         </p>
       </div>
       <div>
-        <p className="text-xl font-medium pt-4">
+        <p className="text-2xl font-medium pt-4">
           {"Below are some tips to help you get started"}
         </p>
         <Card

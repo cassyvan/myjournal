@@ -3,7 +3,6 @@ import db from "../../../firebase/firestore";
 
 const updateDB = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-
   try {
     if (req.method === "PUT") {
       await db

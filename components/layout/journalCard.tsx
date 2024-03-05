@@ -30,8 +30,6 @@ const JournalCard = ({ entry }: props) => {
   };
 
   const openDeleteDialogue = () => {
-    console.log(entry);
-
     setDeleteDialogue(true);
   };
 

@@ -31,16 +31,15 @@ const Modal = () => {
   const onSubmit = async () => {
     const { body } = formData;
     const title = body.substring(0, 20);
+    console.log(selectedEntry.id);
     if (selectedEntry.id) {
       await axios.put(`/api/journal/${selectedEntry.id}`, {
         title,
-        slug: dashify(title),
         body,
       });
     } else {
       await axios.post("/api/journal", {
         title,
-        slug: dashify(title),
         body,
       });
     }

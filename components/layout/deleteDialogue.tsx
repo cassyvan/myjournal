@@ -1,4 +1,5 @@
 import { useState } from "react";
+import RoundedPinkButton from "../ui/rounded-pink-button";
 
 interface props {
   isOpen: boolean;
@@ -11,15 +12,13 @@ const DeleteDialogue = ({ isOpen, onClose, onConfirm }: props) => {
     <>
       {isOpen && (
         <dialog className="fixed left-0 top-0 w-full h-full bg-white bg-opacity-40 z-50 overflow-auto backdrop-blur flex justify-center items-center">
-          <div className="bg-white p-8 rounded-lg w-screen mx-56 relative">
-            <h2>DELETE?</h2>
-            <button
-              className="shadow-lg rounded-full text-gray-900 p-2 absolute right-0 mr-4 -m-4"
-              onClick={onClose}
-            >
-              NO
-            </button>
-            <button onClick={onConfirm}>YES</button>
+          <div className="bg-white p-8 rounded-lg w-96 mx-56 relative text-center shadow-md">
+            <h3>Are you sure?</h3>
+            <p className="py-6">This entry will be permanently deleted</p>
+            <div className="flex justify-around">
+              <RoundedPinkButton onClick={onConfirm} title="YES" />
+              <RoundedPinkButton onClick={onClose} title="NO" />
+            </div>
           </div>
         </dialog>
       )}

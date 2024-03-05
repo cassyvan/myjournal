@@ -23,7 +23,7 @@ function SignupPage() {
 
     // else successful
     console.log(result);
-    return router.push("/dashboard");
+    return router.push("/hello");
   };
   return (
     <div className="form-wrapper">

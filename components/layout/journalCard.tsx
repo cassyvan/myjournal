@@ -1,5 +1,5 @@
 import { JournalContext, useJournalContext } from "@/context/entryContext";
-import { Entry } from "@/utils/entry";
+import { Entry } from "@/utils/entrytype";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";

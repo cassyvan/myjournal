@@ -1,7 +1,7 @@
 import Link from "next/link";
 import db from "../../firebase/firestore";
 import JournalCard from "@/components/layout/journalCard";
-import { Entry } from "@/utils/entry";
+import { Entry } from "@/utils/entrytype";
 
 interface Entries {
   entriesData: Entry[];

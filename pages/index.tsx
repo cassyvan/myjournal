@@ -17,7 +17,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (context.user) {
-      router.push("/dashboard");
+      router.push("/hello");
     }
   });
 
@@ -30,7 +30,7 @@ const HomePage = () => {
       return console.log(error);
     }
     console.log(result);
-    return router.push("/dashboard");
+    return router.push("/hello");
   };
 
   return (

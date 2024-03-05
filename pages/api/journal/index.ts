@@ -11,11 +11,12 @@ const addEntry = async (req: NextApiRequest, res: NextApiResponse) => {
     if (entriesData.some((entry: { slug: string }) => entry.slug === slug)) {
       res.status(400).end();
     } else {
-      const { id } = await db.collection("entries").add({
+      const id = await db.collection("entries").add({
         ...req.body,
         created: new Date().toISOString(),
       });
-      res.status(200).json({ id });
+      res.status(200).json(id);
+      console.log(id.id);
     }
   } catch (e) {
     res.status(400).end();

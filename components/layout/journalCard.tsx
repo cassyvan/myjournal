@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import DeleteDialogue from "./deleteDialogue";
 
 interface props {
@@ -22,8 +22,6 @@ const JournalCard = ({ entry }: props) => {
   const pathName = usePathname();
   const router = useRouter();
 
-  const { selectedEntry } = useContext(JournalContext);
-
   const { updateEntry } = useJournalContext();
 
   const showModal = () => {
@@ -32,24 +30,19 @@ const JournalCard = ({ entry }: props) => {
   };
 
   const openDeleteDialogue = () => {
-    console.log(selectedEntry.id);
+    console.log(entry);
 
     setDeleteDialogue(true);
   };
 
   const handleConfirmDelete = async () => {
-    await axios.delete(`/api/journal/${selectedEntry.id}`);
+    await axios.delete(`/api/journal/${entry.id}`);
     setDeleteDialogue(false);
     router.push("/journal");
   };
 
   const closeDeleteDialogue = () => {
     setDeleteDialogue(false);
-  };
-
-  const handleDelete = async () => {
-    await axios.delete(`/api/journal/${selectedEntry.id}`);
-    router.push("/journal");
   };
 
   return (

@@ -28,16 +28,22 @@ const Modal = () => {
     const { value, name } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-
   const onSubmit = async () => {
     const { body } = formData;
     const title = body.substring(0, 20);
-    await axios.post("/api/journal", {
-      title,
-      slug: dashify(title),
-      body,
-    });
-    console.log(body);
+    if (selectedEntry.id) {
+      await axios.put(`/api/journal/${selectedEntry.id}`, {
+        title,
+        slug: dashify(title),
+        body,
+      });
+    } else {
+      await axios.post("/api/journal", {
+        title,
+        slug: dashify(title),
+        body,
+      });
+    }
     closeModal();
   };
 
@@ -46,7 +52,7 @@ const Modal = () => {
   };
 
   const closeModal = () => {
-    return router.push(pathname);
+    router.push(pathname);
   };
 
   return (

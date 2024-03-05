@@ -24,7 +24,7 @@ const JournalHomePage = ({ entriesData }: Entries) => {
 
     const sortedGroupedEntries = Object.entries(groupedEntries).sort(
       ([yearMonthA], [yearMonthB]) => {
-        return yearMonthB.localeCompare(yearMonthA);
+        return yearMonthA.localeCompare(yearMonthB);
       }
     );
 
@@ -32,22 +32,30 @@ const JournalHomePage = ({ entriesData }: Entries) => {
   };
 
   const groupedEntries = groupEntriesByYear();
-
+  console.log(groupedEntries);
   return (
     <div className="flex flex-col items-center">
       <h2>Journal</h2>
       <div className="w-138 min-w-full mt-2">
-        {groupedEntries.map(([yearMonth, entries]) => (
-          <div key={yearMonth}>
-            <h3 className="text-left py-5">{yearMonth}</h3>
-            {entries.map((entry) => (
-              <div key={entry.id}>
-                <JournalCard entry={entry} />
-                <br />
-              </div>
-            ))}
+        {groupedEntries.length !== 0 ? (
+          groupedEntries.map(([yearMonth, entries]) => (
+            <div key={yearMonth}>
+              <h3 className="text-left py-5">{yearMonth}</h3>
+              {entries.map((entry) => (
+                <div key={entry.id}>
+                  <JournalCard entry={entry} />
+                  <br />
+                </div>
+              ))}
+            </div>
+          ))
+        ) : (
+          <div className="text-center pt-14 italic">
+            <p>
+              {"No journal entries created. Click 'New Entry' to get started"}
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

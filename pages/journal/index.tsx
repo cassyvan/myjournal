@@ -1,8 +1,6 @@
-import Link from "next/link";
-import db from "../../firebase/firestore";
 import JournalCard from "@/components/layout/journalCard";
 import { Entry } from "@/utils/entrytype";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEntriesContext } from "@/context/entriesContext";

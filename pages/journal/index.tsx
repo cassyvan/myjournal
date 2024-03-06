@@ -24,7 +24,8 @@ const JournalHomePage = () => {
       }
     }
     fetchEntries();
-  }, [entriesData, updateEntriesData, userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entriesData, userId]);
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
@@ -42,7 +43,7 @@ const JournalHomePage = () => {
 
     const sortedGroupedEntries = Object.entries(groupedEntries).sort(
       ([yearMonthA], [yearMonthB]) => {
-        return yearMonthA.localeCompare(yearMonthB);
+        return yearMonthB.localeCompare(yearMonthA);
       }
     );
 

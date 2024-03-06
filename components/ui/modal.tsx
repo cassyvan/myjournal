@@ -2,7 +2,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import axios from "axios";
 import { JournalContext } from "@/context/entryContext";
 import { useAuthContext } from "@/context/AuthContext";
@@ -29,6 +29,7 @@ const Modal = () => {
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
+    setCheckButton(!!value);
   };
   const onSubmit = async () => {
     const { body } = formData;
@@ -49,9 +50,7 @@ const Modal = () => {
     closeModal();
   };
 
-  const toggleCheckButtonDisplay = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setCheckButton(!!e.target.value);
-  };
+  console.log();
 
   const closeModal = () => {
     router.push(pathname);
@@ -75,7 +74,6 @@ const Modal = () => {
                 rows={32}
                 className="focus:outline-none placeholder:text-2xl !resize-none min-w-full bg-transparent"
                 placeholder="What's on your mind today?"
-                onInput={(e) => toggleCheckButtonDisplay(e)}
                 name="body"
                 onChange={onChange}
                 defaultValue={entryBody}

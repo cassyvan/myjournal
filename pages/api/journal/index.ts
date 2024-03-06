@@ -16,13 +16,11 @@ const entryHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } else if (req.method === "GET") {
     const { userId } = req.query;
-    console.log(userId);
     try {
       const snapshot = await db
         .collection("entries")
         .where("userId", "==", userId)
         .get();
-      console.log(snapshot);
       const entries = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),

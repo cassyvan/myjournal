@@ -5,13 +5,14 @@ import { Entry } from "@/utils/entrytype";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
+import { useEntriesContext } from "@/context/entriesContext";
 
 interface Entries {
   entriesData: Entry[];
 }
 
 const JournalHomePage = () => {
-  const [entriesData, setEntriesData] = useState<Entry[]>();
+  const { entriesData, updateEntriesData } = useEntriesContext();
   const { user } = useAuthContext();
   const userId = user?.uid;
 
@@ -19,17 +20,17 @@ const JournalHomePage = () => {
     async function fetchEntries() {
       try {
         const response = await axios.get(`/api/journal?userId=${userId}`);
-        setEntriesData(response.data);
+        updateEntriesData(response.data);
       } catch (error) {
         console.error("Error fetching quote: ", error);
       }
     }
     fetchEntries();
-  }, []);
+  }, [entriesData, updateEntriesData, userId]);
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
-    entriesData?.forEach((entry) => {
+    entriesData?.forEach((entry: Entry) => {
       const date = new Date(entry.created);
       const yearMonth = date.toLocaleDateString("default", {
         year: "numeric",
@@ -77,31 +78,6 @@ const JournalHomePage = () => {
       </div>
     </div>
   );
-};
-``;
-
-export const getStaticProps = async () => {
-  try {
-    const entries = await db
-      .collection("entries")
-      .where("userId", "==", "soometing")
-      // .orderBy("created", "desc")
-      .get();
-
-    const entriesData = entries.docs.map((entry) => ({
-      id: entry.id,
-      ...entry.data(),
-    }));
-    return {
-      props: { entriesData },
-      revalidate: 10,
-    };
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return {
-      props: { error: "Error fetching data" },
-    };
-  }
 };
 
 export default JournalHomePage;

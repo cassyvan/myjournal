@@ -8,6 +8,6 @@ export const getNavLinks = () => {
       title: "Journal",
       faIcon: faBook,
     },
-    { title: "Guides", faIcon: faCompass },
+    // { title: "Guides", faIcon: faCompass },
   ];
 };

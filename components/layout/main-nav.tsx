@@ -105,7 +105,7 @@ const MainNavigation = () => {
             onClick={showJournalModal}
           />
         </div>
-        <div className="mr-20 hover:bg-gray-100 mt-28 text-zinc-400 p-4">
+        <div className="mr-20 hover:bg-gray-100 mt-52 text-zinc-400 p-4">
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
           <SignoutButton />
         </div>

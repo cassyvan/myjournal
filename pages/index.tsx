@@ -12,6 +12,7 @@ const HomePage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [invalidAuthMsg, setInvalidAuthMsg] = useState(false);
   const router = useRouter();
   const context = useAuthContext();
 
@@ -27,6 +28,7 @@ const HomePage = () => {
     const { result, error } = await signIn(email, password);
 
     if (error) {
+      setInvalidAuthMsg(true);
       return console.log(error);
     }
     console.log(result);
@@ -35,6 +37,11 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col justify-center ">
+      {invalidAuthMsg && (
+        <div className="bg-red-400 text-center rounded-full font-medium">
+          Invalid username or password. Try again.
+        </div>
+      )}
       <div className="self-center py-8">
         <Image src="/images/pisces.png" height={100} width={100} alt="logo" />
       </div>

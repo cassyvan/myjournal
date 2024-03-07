@@ -1,15 +1,12 @@
 import JournalCard from "@/components/layout/journalCard";
 import { Entry } from "@/utils/entrytype";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEntriesContext } from "@/context/entriesContext";
 
-interface Entries {
-  entriesData: Entry[];
-}
-
 const JournalHomePage = () => {
+  const [loading, setLoading] = useState(true);
   const { entriesData, updateEntriesData } = useEntriesContext();
   const { user } = useAuthContext();
   const userId = user?.uid;
@@ -19,8 +16,9 @@ const JournalHomePage = () => {
       try {
         const response = await axios.get(`/api/journal?userId=${userId}`);
         updateEntriesData(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching quote: ", error);
+        console.error("Error fetching entries: ", error);
       }
     }
     fetchEntries();
@@ -55,7 +53,9 @@ const JournalHomePage = () => {
     <div className="flex flex-col items-center">
       <h2>Journal</h2>
       <div className="w-138 min-w-full mt-2">
-        {groupedEntries.length !== 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : groupedEntries.length !== 0 ? (
           groupedEntries.map(([yearMonth, entries]) => (
             <div key={yearMonth}>
               <h3 className="text-left py-5">{yearMonth}</h3>

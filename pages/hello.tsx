@@ -1,32 +1,25 @@
-import QuoteCard from "@/components/layout/quoteCard";
 import Card from "@/components/layout/card";
-import { Quote } from "@/utils/quotetype";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { journalPrompts } from "@/utils/prompts";
+import { quoteOfTheDay } from "@/utils/quote-of-the-day";
 
 const Dashboard = () => {
-  const [quote, setQuote] = useState<Quote>();
-
-  useEffect(() => {
-    async function fetchQuote() {
-      try {
-        const response = await axios.get("/api/quote");
-        setQuote(response.data);
-      } catch (error) {
-        console.error("Error fetching quote: ", error);
-      }
-    }
-    fetchQuote();
-  }, []);
-
   const prompts = journalPrompts;
+  const currDay = new Date().getDay();
+  const quote = quoteOfTheDay[currDay];
 
   return (
     <div className="w-140 flex flex-col gap-y-6 pb-20">
       <h2 className="text-left">Welcome!</h2>
       <div>
-        <QuoteCard title="Inspo quote of the day..." quote={quote} />
+        <div className="pt-4">
+          <h3 className="text-left pb-2">{"Inspo quote of the day..."}</h3>
+          <div className="block p-6 bg-white border border-sky-200 rounded-lg shadow w-full">
+            <div className="font-normal text-gray-700 w-full h-full p-2">
+              <p>{quote.quote}</p>
+              <p className="text-right italic pt-2">{` - ${quote.author}`}</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div>
         <p className="text-xl">

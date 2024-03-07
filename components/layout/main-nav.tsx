@@ -34,6 +34,10 @@ const MainNavigation = () => {
     return;
   }
 
+  const navigate = (link: string) => {
+    router.push(link.toLowerCase());
+  };
+
   const showJournalModal = () => {
     updateEntry({
       body: "",
@@ -65,36 +69,36 @@ const MainNavigation = () => {
           className="self-center py-24 text-pink-300"
         />
 
-        <nav className="text-xl mb-16 mr-16 text-zinc-400">
-          <ul className="flex flex-col justify-center">
+        <nav className="text-xl mr-16 text-zinc-400">
+          <ul className="flex flex-col gap-y-4">
             {navLinks.map((link) => (
               <li
                 key={link.title.toLowerCase()}
-                className="py-6 hover:bg-gray-50"
+                className="hover:bg-gray-50 hover:cursor-pointer flex justify-center py-4"
+                onClick={() => navigate(link.title)}
               >
                 <FontAwesomeIcon
                   icon={link.faIcon}
                   className={
                     pathName === `/${link.title.toLowerCase()}`
+                      ? "text-pink-300 mt-1 pr-2"
+                      : "mt-1 pr-2"
+                  }
+                />
+                <div
+                  className={
+                    pathName === `/${link.title.toLowerCase()}`
                       ? "text-pink-300"
                       : ""
                   }
-                />
-                <Link
-                  href={`/${link.title.toLowerCase()}`}
-                  className={
-                    pathName === `/${link.title.toLowerCase()}`
-                      ? "text-pink-300 pl-2"
-                      : "pl-2"
-                  }
                 >
                   {link.title}
-                </Link>
+                </div>
               </li>
             ))}
           </ul>
         </nav>
-        <div className="mr-16">
+        <div className="mr-16 mt-16">
           <RoundedPinkButton
             title={"New Entry"}
             icon={<FontAwesomeIcon icon={faPlus} className="pr-2" />}

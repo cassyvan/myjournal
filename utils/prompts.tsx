@@ -1,7 +1,7 @@
 export const journalPrompts = [
   {
     key: 1,
-    title: "What was the best ting that happened today?",
+    title: "What was the best thing that happened today?",
   },
   {
     key: 2,

@@ -8,7 +8,7 @@ const Dashboard = () => {
   const quote = quoteOfTheDay[currDay];
 
   return (
-    <div className="w-140 flex flex-col gap-y-6 pb-20">
+    <div className="lg:w-140 md:w-3/5 flex flex-col gap-y-6 pb-20 lg:ml-24 md:ml-72 md:pr-2 sm:mx-4">
       <h2 className="text-left">Welcome!</h2>
       <div>
         <div className="pt-4">

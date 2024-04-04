@@ -1,17 +1,15 @@
 import { getNavLinks } from "@/utils/navlinks-utils";
-import { faXmark, faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 import RoundedPinkButton from "../ui/rounded-pink-button";
 
 interface props {
-  isOpen: boolean;
-  // toggleMenu: () => void;
+  addEntry: () => void;
 }
 
-const MobileNav = () => {
+const MobileNav = ({ addEntry }: props) => {
   const navLinks = getNavLinks();
   const pathName = usePathname();
 
@@ -42,7 +40,9 @@ const MobileNav = () => {
         </ul>
       </div>
       <div className="fixed bottom-20 right-8 z-10 ">
-        <RoundedPinkButton icon={<FontAwesomeIcon icon={faPlus} />} />
+        <RoundedPinkButton
+          icon={<FontAwesomeIcon icon={faPlus} onClick={addEntry} />}
+        />
       </div>
     </div>
   );

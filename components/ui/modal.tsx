@@ -60,7 +60,7 @@ const Modal = () => {
     <>
       {modal && (
         <dialog className="fixed left-0 top-0 w-full h-full bg-white bg-opacity-80 z-50 overflow-auto backdrop-blur flex justify-center items-center">
-          <div className="bg-white p-8 rounded-lg w-screen mx-56 relative">
+          <div className="bg-white p-8 rounded-lg w-screen mx-56 relative sm:mx-8 md:mx-12">
             <button
               className="shadow-lg rounded-full text-gray-900 p-2 absolute right-0 mr-4 -m-4"
               onClick={closeModal}

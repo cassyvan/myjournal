@@ -105,7 +105,7 @@ const MainNavigation = () => {
         </div>
       </div>
       <div className="lg:hidden md:hidden">
-        <MobileNav />
+        <MobileNav addEntry={showJournalModal} />
       </div>
     </div>
   );

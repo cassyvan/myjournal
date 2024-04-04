@@ -8,7 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      screens: { sm: { max: "900px" } },
+      screens: {
+        sm: { max: "720px" },
+        md: { min: "721px", max: "1160px" },
+        lg: { min: "1160px" },
+      },
       width: {
         138: "38rem",
         140: "40rem",

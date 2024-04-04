@@ -50,9 +50,9 @@ const JournalHomePage = () => {
 
   const groupedEntries = groupEntriesByYear();
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col lg:w-138 lg:ml-32 md:ml-72 md:w-3/5 sm:px-4">
       <h2>Journal</h2>
-      <div className="w-138 min-w-full mt-2">
+      <div className="mt-2">
         {loading ? (
           <p>Loading...</p>
         ) : groupedEntries.length !== 0 ? (

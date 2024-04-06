@@ -1,5 +1,8 @@
+import { getGuides } from "@/utils/guides";
+
 const GuidePage = () => {
-  return <h3>Under construction. Check back later...</h3>;
+  const guides = getGuides;
+  return <div>{guides.map((guide) => guide.cardInfo)}</div>;
 };
 
 export default GuidePage;

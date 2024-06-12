@@ -28,6 +28,11 @@ const JournalHomePage = () => {
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
+    entriesData?.sort((a, b) => {
+      const dateA = new Date(a.created);
+      const dateB = new Date(b.created);
+      return dateA.getTime() - dateB.getTime();
+    });
     entriesData?.forEach((entry: Entry) => {
       const date = new Date(entry.created);
       const yearMonth = date.toLocaleDateString("default", {
@@ -46,6 +51,7 @@ const JournalHomePage = () => {
       }
     );
 
+    console.log(Object);
     return sortedGroupedEntries;
   };
 

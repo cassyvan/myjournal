@@ -1,15 +1,17 @@
 import JournalCard from "@/components/layout/journalCard";
-import { Entry } from "@/utils/entrytype";
-import { useEffect, useState } from "react";
+import { Entry } from "@/utils/types/entrytype";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEntriesContext } from "@/context/entriesContext";
+import { JournalContext, useJournalContext } from "@/context/entryContext";
 
 const JournalHomePage = () => {
   const [loading, setLoading] = useState(true);
   const { entriesData, updateEntriesData } = useEntriesContext();
   const { user } = useAuthContext();
   const userId = user?.uid;
+  const { selectedEntry, updateEntry } = useJournalContext();
 
   useEffect(() => {
     async function fetchEntries() {
@@ -22,8 +24,7 @@ const JournalHomePage = () => {
       }
     }
     fetchEntries();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entriesData, userId]);
+  }, []);
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
@@ -49,6 +50,7 @@ const JournalHomePage = () => {
   };
 
   const groupedEntries = groupEntriesByYear();
+
   return (
     <div className="flex flex-col lg:w-138 lg:ml-32 md:ml-72 md:w-3/5 sm:px-4">
       <h2>Journal</h2>

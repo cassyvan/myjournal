@@ -1,7 +1,6 @@
 export interface Entry {
-  body: string;
+  body: string | undefined;
+  content: string | undefined;
   created: string;
   id: string;
-  slug: string;
-  title: string;
 }

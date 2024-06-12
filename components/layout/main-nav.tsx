@@ -35,8 +35,6 @@ const MainNavigation = () => {
       body: "",
       created: "",
       id: "",
-      slug: "",
-      title: "",
     });
     router.push({ pathname: pathName, query: "modal=true" });
   };

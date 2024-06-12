@@ -17,6 +17,9 @@ const config: Config = {
         138: "38rem",
         140: "40rem",
       },
+      height: {
+        "150": "50rem",
+      },
       keyframes: {
         blob: {
           "0%, 100%": { borderRadius: "30% 60% 70% 40%/50% 60% 30% 60%" },

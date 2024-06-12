@@ -1,19 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
-
-interface Entry {
-  body: string;
-  created: string;
-  id: string;
-  slug: string;
-  title: string;
-}
+import { Entry } from "@/utils/types/entrytype";
 
 interface JournalContextType {
   selectedEntry: Entry;
   updateEntry: (entry: Entry) => void;
 }
 
-const emptyEntry = { body: "", created: "", id: "", slug: "", title: "" };
+const emptyEntry: Entry = { body: "", content: "", created: "", id: "" };
 
 export const JournalContext = createContext<JournalContextType>({
   selectedEntry: emptyEntry,

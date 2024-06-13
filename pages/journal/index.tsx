@@ -1,17 +1,17 @@
 import JournalCard from "@/components/layout/journalCard";
 import { Entry } from "@/utils/types/entrytype";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEntriesContext } from "@/context/entriesContext";
-import { JournalContext, useJournalContext } from "@/context/entryContext";
+import { useJournalContext } from "@/context/entryContext";
 
 const JournalHomePage = () => {
   const [loading, setLoading] = useState(true);
   const { entriesData, updateEntriesData } = useEntriesContext();
   const { user } = useAuthContext();
   const userId = user?.uid;
-  const { selectedEntry, updateEntry } = useJournalContext();
+  const { selectedEntry } = useJournalContext();
 
   useEffect(() => {
     async function fetchEntries() {
@@ -24,7 +24,7 @@ const JournalHomePage = () => {
       }
     }
     fetchEntries();
-  }, []);
+  }, [selectedEntry]);
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
@@ -51,7 +51,6 @@ const JournalHomePage = () => {
       }
     );
 
-    console.log(Object);
     return sortedGroupedEntries;
   };
 

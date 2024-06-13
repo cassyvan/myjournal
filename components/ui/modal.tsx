@@ -2,19 +2,15 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { JournalContext } from "@/context/entryContext";
+import { useJournalContext } from "@/context/entryContext";
 import { useAuthContext } from "@/context/AuthContext";
-import {
-  ContentState,
-  EditorState,
-  convertFromRaw,
-  convertToRaw,
-} from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import dynamic from "next/dynamic";
 import { useEntriesContext } from "@/context/entriesContext";
+import { Entry } from "@/utils/types/entrytype";
 
 const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
@@ -22,8 +18,9 @@ const Editor = dynamic(
 );
 
 const Modal = () => {
-  const { selectedEntry } = useContext(JournalContext);
-  const entryBody = selectedEntry?.content;
+  const { selectedEntry, updateEntry } = useJournalContext();
+
+  const entryBody = selectedEntry.content;
 
   const [checkButton, setCheckButton] = useState(false);
   const [editorState, setEditorState] = useState(() => {
@@ -55,7 +52,7 @@ const Modal = () => {
     } else {
       setEditorState(EditorState.createEmpty());
     }
-  }, [entryBody]);
+  }, [selectedEntry]);
 
   const onSubmit = async () => {
     const editorContent = editorState?.getCurrentContent();
@@ -64,6 +61,12 @@ const Modal = () => {
       : "";
 
     const body = editorContent?.getPlainText();
+    const updatedEntry: Entry = {
+      body: body,
+      content: content,
+      created: selectedEntry.created,
+      id: selectedEntry.id,
+    };
     try {
       if (selectedEntry.id) {
         await axios.put(`/api/journal/${selectedEntry.id}`, {
@@ -71,6 +74,7 @@ const Modal = () => {
           content,
           userId,
         });
+        updateEntry(updatedEntry);
       } else {
         await axios
           .post("/api/journal", {

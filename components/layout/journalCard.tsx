@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteDialogue from "./deleteDialogue";
 import { useEntriesContext } from "@/context/entriesContext";
 
@@ -52,7 +52,7 @@ const JournalCard = ({ entry }: props) => {
   return (
     <div>
       <div className="block h-36 bg-white border border-sky-200 rounded-lg shadow hover:bg-stone-100 hover:cursor-pointer relative">
-        <div className="absolute text-center mt-3 ml-4">
+        <div className="absolute text-center mt-6 ml-4">
           <div className="bg-zinc-100 px-3.5 py-1.5 rounded-lg shadow-md">
             <div>{weekDay}</div>
             <div className="font-bold">{dateNum}</div>

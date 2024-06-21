@@ -1,6 +1,6 @@
 // entryContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Entry } from "@/utils/entrytype";
+import { Entry } from "@/utils/types/entrytype";
 
 interface ContextProps {
   entriesData: Entry[];

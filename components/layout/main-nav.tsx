@@ -1,6 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -35,8 +33,7 @@ const MainNavigation = () => {
       body: "",
       created: "",
       id: "",
-      slug: "",
-      title: "",
+      content: "",
     });
     router.push({ pathname: pathName, query: "modal=true" });
   };

@@ -2,55 +2,102 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { JournalContext } from "@/context/entryContext";
+import { useJournalContext } from "@/context/entryContext";
 import { useAuthContext } from "@/context/AuthContext";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import dynamic from "next/dynamic";
+import { useEntriesContext } from "@/context/entriesContext";
+import { Entry } from "@/utils/types/entrytype";
+
+const Editor = dynamic(
+  () => import("react-draft-wysiwyg").then((module) => module.Editor),
+  { ssr: false }
+);
 
 const Modal = () => {
+  const { selectedEntry, updateEntry } = useJournalContext();
+
+  const entryBody = selectedEntry.content;
+
   const [checkButton, setCheckButton] = useState(false);
+  const [editorState, setEditorState] = useState(() => {
+    if (entryBody) {
+      return EditorState.createWithContent(
+        convertFromRaw(JSON.parse(entryBody))
+      );
+    }
+  });
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
   const pathname = usePathname();
   const { user } = useAuthContext();
+  const { entriesData, updateEntriesData } = useEntriesContext();
   const userId = user?.uid;
 
-  const newContent = {
-    title: "",
-    body: "",
+  const onEditorStateChange = (newEditorState: EditorState) => {
+    setEditorState(newEditorState);
+    setCheckButton(!!newEditorState);
   };
-  const [formData, setFormData] = useState(newContent);
 
-  const { selectedEntry } = useContext(JournalContext);
-
-  const entryBody = selectedEntry?.body;
-
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { value, name } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-    setCheckButton(!!value);
-  };
-  const onSubmit = async () => {
-    const { body } = formData;
-    const title = body.substring(0, 20);
-    if (selectedEntry.id) {
-      await axios.put(`/api/journal/${selectedEntry.id}`, {
-        title,
-        body,
-        userId,
-      });
+  useEffect(() => {
+    if (entryBody) {
+      setEditorState(
+        EditorState.createWithContent(convertFromRaw(JSON.parse(entryBody)))
+      );
     } else {
-      await axios.post("/api/journal", {
-        title,
-        body,
-        userId,
-      });
+      setEditorState(EditorState.createEmpty());
     }
-    closeModal();
-  };
+  }, [selectedEntry]);
 
-  console.log();
+  const onSubmit = async () => {
+    const editorContent = editorState?.getCurrentContent();
+    const content = editorContent
+      ? JSON.stringify(convertToRaw(editorContent))
+      : "";
+
+    const body = editorContent?.getPlainText();
+    const updatedEntry: Entry = {
+      body: body,
+      content: content,
+      created: selectedEntry.created,
+      id: selectedEntry.id,
+    };
+    try {
+      if (selectedEntry.id) {
+        await axios.put(`/api/journal/${selectedEntry.id}`, {
+          body,
+          content,
+          userId,
+        });
+        updateEntry(updatedEntry);
+      } else {
+        await axios
+          .post("/api/journal", {
+            body,
+            content,
+            userId,
+          })
+          .then((response) => {
+            const data = response.config.data;
+            const newEntry = {
+              body,
+              content: content,
+              created: new Date().toISOString(),
+              id: data.id,
+            };
+            updateEntriesData([...entriesData, newEntry]);
+          });
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
 
   const closeModal = () => {
     router.push(pathname);
@@ -67,18 +114,17 @@ const Modal = () => {
             >
               <FontAwesomeIcon icon={faXmark} className="text-gray-500 px-2" />
             </button>
-            <div className="flex flex-col items-center">
-              <br />
-              <textarea
-                autoFocus
-                rows={32}
-                className="focus:outline-none placeholder:text-2xl !resize-none min-w-full bg-transparent"
-                placeholder="What's on your mind today?"
-                name="body"
-                onChange={onChange}
-                defaultValue={entryBody}
-              ></textarea>
-            </div>
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={onEditorStateChange}
+              editorStyle={{
+                height: 700,
+                padding: 2,
+              }}
+            />
             {checkButton && (
               <div className="flex justify-center">
                 <button

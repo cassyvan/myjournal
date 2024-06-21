@@ -1,15 +1,17 @@
 import JournalCard from "@/components/layout/journalCard";
-import { Entry } from "@/utils/entrytype";
+import { Entry } from "@/utils/types/entrytype";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "@/context/AuthContext";
 import { useEntriesContext } from "@/context/entriesContext";
+import { useJournalContext } from "@/context/entryContext";
 
 const JournalHomePage = () => {
   const [loading, setLoading] = useState(true);
   const { entriesData, updateEntriesData } = useEntriesContext();
   const { user } = useAuthContext();
   const userId = user?.uid;
+  const { selectedEntry } = useJournalContext();
 
   useEffect(() => {
     async function fetchEntries() {
@@ -22,11 +24,15 @@ const JournalHomePage = () => {
       }
     }
     fetchEntries();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entriesData, userId]);
+  }, [selectedEntry]);
 
   const groupEntriesByYear = () => {
     const groupedEntries: { [yearMonth: string]: Entry[] } = {};
+    entriesData?.sort((a, b) => {
+      const dateA = new Date(a.created);
+      const dateB = new Date(b.created);
+      return dateA.getTime() - dateB.getTime();
+    });
     entriesData?.forEach((entry: Entry) => {
       const date = new Date(entry.created);
       const yearMonth = date.toLocaleDateString("default", {
@@ -49,6 +55,7 @@ const JournalHomePage = () => {
   };
 
   const groupedEntries = groupEntriesByYear();
+
   return (
     <div className="flex flex-col lg:w-138 lg:ml-32 md:ml-72 md:w-3/5 sm:px-4">
       <h2>Journal</h2>
